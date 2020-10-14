@@ -1,0 +1,1 @@
+sheep_move_dist: 0.5;
