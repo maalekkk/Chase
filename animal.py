@@ -1,11 +1,11 @@
-from abc import ABC, abstractmethod
+class Animal:
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
 
-
-class Animal(ABC):
-    @abstractmethod
-    def __init__(self):
-        self.x = 0.0
-        self.y = 0.0
+    @property
+    def coords(self):
+        return [self.x, self.y]
 
     def move(self):
         pass
