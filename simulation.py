@@ -1,4 +1,6 @@
 import csv
+import logging
+
 import wolf
 import sheep
 import json
@@ -26,9 +28,6 @@ class Simulation:
         self.wolf = wolf.Wolf(wolf_move_dist)
         self.sheep = [sheep.Sheep(init_pos_limit, sheep_move_dist) for i in range(sheep_number)]
 
-    def __repr__(self):
-        return f"Simulation()"
-
     def moving_animals(self):
         for single_sheep in self.sheep:
             single_sheep.move()
@@ -46,6 +45,8 @@ class Simulation:
             dead_sheep = self.moving_animals()
             if dead_sheep is not None:
                 num_of_dead_sheep = starters_sheep.index(dead_sheep) + 1
+                logging.info(
+                    f"{self.wolf.__class__.__name__} -> {self.wolf} ate {dead_sheep}(Number: {num_of_dead_sheep})")
                 self.sheep.remove(dead_sheep)
             else:
                 num_of_dead_sheep = '-'

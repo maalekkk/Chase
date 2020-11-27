@@ -27,6 +27,7 @@ def func_logger(func, cls=None):
             logging.error(e)
             raise e
         return result
+
     return wrapper
 
 
@@ -42,15 +43,15 @@ def cls_logger(func):
     return wrapper
 
 
-@func_logger
 def parse_args(argument_parser):
     argument_parser.add_argument('-c', '--config', help='Specifying a configuration file', action='store',
                                  metavar='FILE', dest='configuration_file', type=str)
     argument_parser.add_argument('-d', '--dir', action='store',
                                  help='Specifies a subdirectory of the current directory where the pos.json and '
                                       'alive.csv files are to be saved', metavar='DIR', dest='directory', type=str)
-    argument_parser.add_argument('-l', '--log', action='store', help='Specifies the level of events to be logged.',
-                                 metavar='LEVEL', dest='log_level', type=str)
+    argument_parser.add_argument('-l', '--log', help='Specifies the level of events to be logged.',
+                                 metavar='LEVEL', dest='log_level', type=str,
+                                 choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
     argument_parser.add_argument('-r', '--rounds', action='store', help='Specifies the number of turns.', metavar='NUM',
                                  type=check_positive_int, dest='rounds_number')
     argument_parser.add_argument('-s', '--sheep', action='store',
@@ -74,14 +75,6 @@ def parse_args(argument_parser):
         'log': None
     }
 
-    # log_levels = {
-    #     "DEBUG": logging.DEBUG,
-    #     "INFO": logging.INFO,
-    #     "WARNING": logging.WARNING,
-    #     "ERROR": logging.ERROR,
-    #     "CRITICAL": logging.CRITICAL
-    # }
-
     if arguments.configuration_file:
         parameters['init_pos_limit'], parameters['sheep_move_dist'], parameters['wolf_move_dist'] = config_parsing(
             arguments.configuration_file)
@@ -90,8 +83,8 @@ def parse_args(argument_parser):
         if not os.path.exists(arguments.directory):
             os.makedirs(arguments.directory)
     if arguments.log_level:
-        log_path = os.path.join(parameters['directory'], 'chase.log')
-        logging.basicConfig(filename=log_path,
+        logs_path = os.path.join(parameters['directory'], 'chase.log')
+        logging.basicConfig(filename=logs_path,
                             filemode='w', datefmt='%H:%M:%S', level=arguments.log_level,
                             format='%(asctime)s,%(msecs)d :: %(levelname)-8s '
                                    ':: %(message)s')
@@ -106,48 +99,66 @@ def parse_args(argument_parser):
         parameters['wait'] = arguments.wait
     return parameters
 
-
+@func_logger
 def config_parsing(filename):
     config_parser = ConfigParser()
     config_parser.read(filename)
     terrain = config_parser['Terrain']
-    init_pos_limit = abs(terrain.getfloat('InitPosLimit'))
+    init_pos_limit = terrain.getfloat('InitPosLimit')
+    if init_pos_limit != 0:
+        if init_pos_limit < 0:
+            init_pos_limit = abs(init_pos_limit)
+            # logging.warning(
+            #     f"{config_parsing.__name__} -> The absolute value was taken from the value you entered (InitPosLimit).")
+    else:
+        msg = "Number must be not zero"
+        logging.error(f"{config_parsing.__name__} -> {msg}")
+        raise ValueError(msg)
     movement = config_parser['Movement']
     sheep_move_dist = movement.getfloat('SheepMoveDist')
     wolf_move_dist = movement.getfloat('WolfMoveDist')
     try:
         sheep_move_dist = check_positive_float(sheep_move_dist)
         wolf_move_dist = check_positive_float(wolf_move_dist)
-    except ValueError as e:
-        print(e)
+    except argparse.ArgumentTypeError as e:
+        logging.error(f"{config_parsing.__name__} -> {e} ")
+        raise e
     return init_pos_limit, sheep_move_dist, wolf_move_dist
 
 
 @func_logger
 def check_positive_int(argument):
-    number = 0
     try:
         number = int(argument)
-    except ValueError:
-        print("The given argument isn't a number.")
+    except ValueError as e:
+        logging.error(f"{check_positive_int.__name__} -> {e}")
+        raise e
     if number <= 0:
-        raise argparse.ArgumentTypeError("Number(argument) must be positive value")
+        msg = "Number(argument) must be positive value"
+        logging.error(f"{check_positive_int.__name__} -> {msg}")
+        raise argparse.ArgumentTypeError(msg)
     return number
 
 
 @func_logger
 def check_positive_float(argument):
-    number = 0.0
     try:
         number = float(argument)
-    except ValueError:
-        print("The given argument isn't a number.")
+    except ValueError as e:
+        logging.error(f"{check_positive_int.__name__} -> {e}")
+        raise e
     if number <= 0:
-        raise argparse.ArgumentTypeError("Number(argument) must be positive value")
+        msg = "Number(argument) must be positive value"
+        logging.error(f"{check_positive_int.__name__} -> {msg}")
+        raise argparse.ArgumentTypeError(msg)
     return number
 
 
 @func_logger
 def check_bool(argument):
-    if argument is not True or argument is not False:
-        raise argparse.ArgumentTypeError("Wait argument must be bool value.")
+    if argument != 'True' and argument != 'False':
+        msg = "Argument must be bool value(True or False)."
+        logging.error(f"{check_positive_int.__name__} -> {msg}")
+        raise argparse.ArgumentTypeError(msg)
+    else:
+        return bool(argument)
