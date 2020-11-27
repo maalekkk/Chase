@@ -53,15 +53,15 @@ def parse_args(argument_parser):
                                  metavar='LEVEL', dest='log_level', type=str,
                                  choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
     argument_parser.add_argument('-r', '--rounds', action='store', help='Specifies the number of turns.', metavar='NUM',
-                                 type=check_positive_int, dest='rounds_number')
+                                 type=int, dest='rounds_number')
     argument_parser.add_argument('-s', '--sheep', action='store',
-                                 help='Specifies the number of sheep.', metavar='NUM', type=check_positive_int,
+                                 help='Specifies the number of sheep.', metavar='NUM', type=int,
                                  dest='sheep_number')
     argument_parser.add_argument('-w', '--wait', action='store',
                                  help='Specifies that after displaying basic information about the simulation state '
                                       'at the end of each round, the rest of the simulation should be stopped until '
                                       'the user presses a key.',
-                                 dest='wait', type=check_bool)
+                                 dest='wait', type=bool)
     arguments = argument_parser.parse_args()
 
     parameters = {
