@@ -1,16 +1,23 @@
-### Chase
+# Chase
 
-# Description
+Chase appliaction.
+
+### Description
+
 The program implements simulations in which the wolf catches sheep.
 
-#Authors
-*Bartłomiej Małkowski and Michał Bitnerowski.*
+### Authors
+- Bartłomiej Małkowski
+- Michał Bitnerowski
 
-#TUL
+### TUL
+
 This task is implemented for 'Python programming' subject.
 
-#Academic year
+### Academic year
+
 2020/2021
 
-#License
+### License
+
 MIT License
