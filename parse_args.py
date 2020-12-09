@@ -99,6 +99,7 @@ def parse_args(argument_parser):
         parameters['wait'] = arguments.wait
     return parameters
 
+
 @func_logger
 def config_parsing(filename):
     config_parser = ConfigParser()
@@ -108,8 +109,8 @@ def config_parsing(filename):
     if init_pos_limit != 0:
         if init_pos_limit < 0:
             init_pos_limit = abs(init_pos_limit)
-            # logging.warning(
-            #     f"{config_parsing.__name__} -> The absolute value was taken from the value you entered (InitPosLimit).")
+            logging.warning(
+                f"{config_parsing.__name__} -> The absolute value was taken from the value you entered (InitPosLimit).")
     else:
         msg = "Number must be not zero"
         logging.error(f"{config_parsing.__name__} -> {msg}")
