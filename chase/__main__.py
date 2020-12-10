@@ -15,11 +15,11 @@ def main():
                             sheep_move_dist=parameters.get('sheep_move_dist'),
                             round_number=parameters.get('round_number'))
 
-    simulation.simulate(console_output=True, save_to_file=True,
-                        json_file_path=(str(parameters.get('directory')) + r"\pos.json") if parameters.get(
-                            'directory') != '' else r"pos.json",
-                        csv_file_path=(str(parameters.get('directory')) + r"\alive.csv" if parameters.get(
-                            'directory') != '' else r"alive.csv"), wait=parameters.get('wait'))
+    simulation.simulate_console(save_to_file=True,
+                                json_file_path=(str(parameters.get('directory')) + r"\pos.json") if parameters.get(
+                                    'directory') != '' else r"pos.json",
+                                csv_file_path=(str(parameters.get('directory')) + r"\alive.csv" if parameters.get(
+                                    'directory') != '' else r"alive.csv"), wait=parameters.get('wait'))
 
 
 if __name__ == "__main__":

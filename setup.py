@@ -9,7 +9,7 @@ def readme():
 setup(
     name="chase",
     version="0.5",
-    description=readme(),
+    description="Chase simulation with wolf and sheep.",
     long_description=readme(),
     author="Bartłomiej Małkowski and Michał Bitnerowski",
     packages=find_packages(),
