@@ -36,6 +36,8 @@ MIT License
 ```python -m venv venv_name```
 - Activate venv: 
 ```.\venv_name\Scripts\activate```
+- Deactivate venv:
+```deactivate```
 
 ##### Install package in virtual environment
 
