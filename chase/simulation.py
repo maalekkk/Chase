@@ -28,8 +28,7 @@ class Simulation:
         self.round_number = round_number
         self.starters_sheep = self.sheep.copy()
 
-    def simulate_console(self, save_to_file=True, json_file_path="alive.csv", csv_file_path="pos.json",
-                         wait=False):
+    def simulate_console(self, wait=False, save_to_file=True, json_file_path="alive.csv", csv_file_path="pos.json"):
         print('Round number', '{0: <15}'.format('Wolf position'), '{0: <8}'.format('Number of live sheep'),
               'Dead sheep number')
         positions_data, alive_sheep_data = [], []
