@@ -88,9 +88,6 @@ def parse_args(argument_parser):
                             filemode='w', datefmt='%H:%M:%S', level=arguments.log_level,
                             format='%(asctime)s,%(msecs)d :: %(levelname)-8s '
                                    ':: %(message)s')
-    else:
-        logging.disable(logging.CRITICAL)
-        logging.basicConfig(level=10)
     if arguments.rounds_number:
         parameters['round_number'] = arguments.rounds_number if arguments.rounds_number > 0 else 50
     if arguments.sheep_number:
