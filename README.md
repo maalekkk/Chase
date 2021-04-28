@@ -10,6 +10,10 @@ The program implements simulations in which the wolf catches sheep.
 - Bartłomiej Małkowski
 - Michał Bitnerowski
 
+### Programming language
+
+Python
+
 ### TUL
 
 This task is implemented for 'Python programming' subject.
